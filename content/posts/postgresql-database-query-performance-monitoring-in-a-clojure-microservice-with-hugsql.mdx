@@ -1,0 +1,12 @@
+---
+title: PostgreSQL database query performance monitoring in a Clojure microservice with HugSQL
+description: PostgreSQL database query performance monitoring in a Clojure microservice with HugSQL
+date: "2023-07-16"
+---
+In my personal experience, when the load on a micro-service increases, the database often becomes the main bottleneck. That's why it's crucial to have effective monitoring in place for database queries.
+
+There are various ways to achieve this. For instance, if you are using AWS RDS, the database monitoring insights can provide valuable information about the most resource-intensive SQL queries. Another option is to deploy a separate Prometheus exporter, such as the one available at [https://github.com/prometheus-community/postgres_exporter](https://github.com/prometheus-community/postgres_exporter). However, this approach has its drawbacks. It involves setting up a new deployment that requires maintenance, and you also need to modify the default RDS configuration. You can find more details about this process in the documentation at [https://github.com/prometheus-community/postgres_exporter/blob/master/README-RDS.md](https://github.com/prometheus-community/postgres_exporter/blob/master/README-RDS.md).
+
+In our Clojure micro-services, we initially adopted a simple approach of manually wrapping our database queries with Prometheus duration metrics. While this gave us the advantage of having full control over naming Prometheus labels and choosing which code to include in the metric, it had a major downside—it was entirely manual. If a service has multiple places where queries are executed, each one had to be manually instrumented with the metric. As a result, only a subset of queries were wrapped with the duration macro, which didn't provide complete visibility into the service's performance.
+
+We started exploring alternative approaches to address this limitation and enable comprehensive metric wrapping with minimal effort across our numerous microservices. Fortunately, HugSQL offers a useful concept of adaptors, which proved to be the solution we were seeking.
