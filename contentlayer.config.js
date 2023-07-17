@@ -1,4 +1,5 @@
 import { defineDocumentType, makeSource } from "contentlayer/source-files"
+import rehypePrism from "rehype-prism-plus";
 
 /** @type {import('contentlayer/source-files').ComputedFields} */
 const computedFields = {
@@ -51,4 +52,7 @@ export const Post = defineDocumentType(() => ({
 export default makeSource({
   contentDirPath: "./content",
   documentTypes: [Post, Page],
+  mdx: {
+    rehypePlugins: [rehypePrism]
+  }
 })

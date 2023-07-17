@@ -3,6 +3,7 @@ import { Metadata } from "next"
 import { allPages } from "contentlayer/generated"
 
 import { Mdx } from "@/components/mdx-components"
+import {AuthorInfo} from "@/components/author-info";
 
 interface PageProps {
   params: {
@@ -50,11 +51,15 @@ export default async function PagePage({ params }: PageProps) {
   }
 
   return (
-    <article className="py-6 prose dark:prose-invert">
-      <h1>{page.title}</h1>
-      {page.description && <p className="text-xl">{page.description}</p>}
-      <hr />
-      <Mdx code={page.body.code} />
-    </article>
+      <div>
+        <AuthorInfo/>
+        <article className="py-6 prose dark:prose-invert">
+          <h1>{page.title}</h1>
+          {page.description && <p className="text-xl">{page.description}</p>}
+          <hr />
+          {/*<Mdx code={page.body.code} />*/}
+        </article>
+      </div>
+
   )
 }

@@ -3,6 +3,8 @@ import { allPosts } from "contentlayer/generated"
 
 import { Metadata } from "next"
 import { Mdx } from "@/components/mdx-components"
+import Image from "next/image";
+import dayjs from "dayjs";
 
 interface PostProps {
   params: {
@@ -42,6 +44,7 @@ export async function generateStaticParams(): Promise<PostProps["params"][]> {
   }))
 }
 
+
 export default async function PostPage({ params }: PostProps) {
   const post = await getPostFromParams(params)
 
@@ -50,14 +53,28 @@ export default async function PostPage({ params }: PostProps) {
   }
 
   return (
-    <article className="py-6 prose dark:prose-invert">
-      <h1 className="mb-2">{post.title}</h1>
-      {post.description && (
-        <p className="text-xl mt-0 text-slate-700 dark:text-slate-200">
-          {post.description}
-        </p>
-      )}
-      <hr className="my-4" />
+    <article className="py-6 prose dark:prose-invert prose-a:text-orange-600 dark:prose-a:text-yellow-600">
+      <h1 className="mb-2 text-orange-600 dark:text-yellow-600 ">{post.title}</h1>
+
+      <div className={"flex items-start justify-between w-full md:flex-row my-8 my-0"} >
+
+        <div className={"flex items-center my-0"}>
+          <Image
+              src={"/avatar.png"}
+              alt="Andrey Fadeev photo"
+              width={36}
+              height={36}
+              className="rounded-full my-0"
+          />
+          <div className={"ml-2 text-sm text-gray-600 dark:text-gray-400"}>
+          <div className={"flex text-black dark:text-gray-200 font-bold"}>
+            Andrey Fadeev
+          </div>
+            {dayjs(post.date).format('MMMM D, YYYY')}
+          </div>
+        </div>
+
+        </div>
       <Mdx code={post.body.code} />
     </article>
   )

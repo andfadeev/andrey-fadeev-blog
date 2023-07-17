@@ -10,3 +10,42 @@ There are various ways to achieve this. For instance, if you are using AWS RDS, 
 In our Clojure micro-services, we initially adopted a simple approach of manually wrapping our database queries with Prometheus duration metrics. While this gave us the advantage of having full control over naming Prometheus labels and choosing which code to include in the metric, it had a major downside—it was entirely manual. If a service has multiple places where queries are executed, each one had to be manually instrumented with the metric. As a result, only a subset of queries were wrapped with the duration macro, which didn't provide complete visibility into the service's performance.
 
 We started exploring alternative approaches to address this limitation and enable comprehensive metric wrapping with minimal effort across our numerous microservices. Fortunately, HugSQL offers a useful concept of adaptors, which proved to be the solution we were seeking.
+
+Example:
+```clojure {1, 3-4, 17, 20} showLineNumbers
+(deftype MetricsAdapter
+         [collector-registry
+          jdbc-adapter]
+
+  HugsqlAdapter
+  (execute [_ db sqlvec options]
+    (iapetos-core/with-duration
+      (collector-registry
+        :app/sql-query-duration
+        (options->labels options))
+      (adapter/execute jdbc-adapter db sqlvec options)))
+
+  (query [_ db sqlvec options]
+    (iapetos-core/with-duration
+      (collector-registry
+        :app/sql-query-duration
+        (options->labels options))
+      (adapter/query jdbc-adapter db sqlvec options)))
+
+  (result-one [_ result options]
+    (adapter/result-one jdbc-adapter result options))
+
+  (result-many [_ result options]
+    (adapter/result-many jdbc-adapter result options))
+
+  (result-affected [_ result options]
+    (adapter/result-affected jdbc-adapter result options))
+
+  (result-raw [_ result options]
+    (adapter/result-raw jdbc-adapter result options))
+
+  (on-exception [_ exception]
+    (adapter/on-exception jdbc-adapter exception)))
+```
+
+And more content soon!
