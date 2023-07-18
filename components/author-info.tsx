@@ -19,18 +19,15 @@ export function AuthorInfo() {
                 Andrey Fadeev
             </h1>
             <p className="text-gray-600 dark:text-gray-400">
-                Staff Software Engineer at Kroo Bank
+                Staff Software Engineer at <a href={"https://kroo.com"}
+                                              target={"_blank"}
+            className={"underline-offset-[3px] hover:underline"}>Kroo Bank</a>
             </p>
             <div className={"mt-2 flex gap-2 text-gray-600 dark:text-gray-400"}>
                 <LinkedIn/>
                 <GithubSocialIcon/>
             </div>
-            {/*<p className="text-gray-600 dark:text-gray-400">*/}
-            {/*  All good things come to those who wait.*/}
-            {/*</p>*/}
         </div>
     </div>
-
-
 }
 
