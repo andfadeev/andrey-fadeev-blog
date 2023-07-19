@@ -34,9 +34,10 @@ export default function Home() {
                 {allPosts.map((post) => (
                     <article key={post._id}>
                         <Link href={post.slug}
-                              className={"text-yellow-600"}
-                        >
-                            <h3 className={"text-yellow-600"}>{post.title}</h3>
+                              className={"text-orange-600 dark:text-yellow-600"}>
+                            <h3 className={"text-orange-600 dark:text-yellow-600"}>
+                                {post.title}
+                            </h3>
                         </Link>
                     </article>
                 ))}
