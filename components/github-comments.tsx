@@ -4,7 +4,8 @@ import { useTheme } from "next-themes"
 import Giscus from "@giscus/react";
 
 export function GithubComments() {
-  const { theme } = useTheme()
+  const { theme, systemTheme } = useTheme()
+    const currentTheme = theme === 'system' ? systemTheme : theme;
 
   return (
       <Giscus
@@ -17,7 +18,7 @@ export function GithubComments() {
           reactionsEnabled="0"
           emitMetadata="0"
           inputPosition="bottom"
-          theme={theme}
+          theme={currentTheme}
           lang="en"
           loading="lazy"
       />
