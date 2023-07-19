@@ -5,7 +5,7 @@ import { Metadata } from "next"
 import { Mdx } from "@/components/mdx-components"
 import Image from "next/image";
 import dayjs from "dayjs";
-import Script from "next/script";
+import {GithubComments} from "@/components/github-comments";
 
 interface PostProps {
   params: {
@@ -79,23 +79,7 @@ export default async function PostPage({ params }: PostProps) {
           </div>
           <Mdx code={post.body.code} />
         </article>
-        <div className={"giscus"}/>
-        <Script
-            id={"giscus"}
-            src="https://giscus.app/client.js"
-            data-repo="andfadeev/andrey-fadeev-blog"
-            data-repo-id="R_kgDOJ8HU2Q"
-            data-category="Announcements"
-            data-category-id="DIC_kwDOJ8HU2c4CX-es"
-            data-mapping="url"
-            data-strict="0"
-            data-reactions-enabled="0"
-            data-emit-metadata="0"
-            data-input-position="bottom"
-            data-theme="dark"
-            data-lang="en"
-            async></Script>
+        <GithubComments/>
       </div>
-
   )
 }

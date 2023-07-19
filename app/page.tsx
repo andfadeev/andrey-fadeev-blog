@@ -1,9 +1,15 @@
 import {allPosts} from "@/.contentlayer/generated"
 import Link from "next/link"
-import Image from "next/image";
-import {GithubSocialIcon, LinkedIn} from "@/components/social-links";
 import {AuthorInfo} from "@/components/author-info";
+import {Metadata} from "next";
 
+export async function generateMetadata(): Promise<Metadata> {
+
+    return {
+        title: "Andrey Fadeev | Home",
+        description:"DESC!@"
+    }
+}
 
 export default function Home() {
     const buttonClassName = "px-10 py-5  bg-slate-100 dark:bg-slate-900 rounded-md mt-2 inline-block no-underline hover:underline underline-offset-[3px]"
@@ -32,7 +38,6 @@ export default function Home() {
                         >
                             <h3 className={"text-yellow-600"}>{post.title}</h3>
                         </Link>
-                        {/*{post.description && <p>{post.description}</p>}*/}
                     </article>
                 ))}
 

@@ -1,5 +1,14 @@
 import { allPosts } from "@/.contentlayer/generated"
 import Link from "next/link"
+import {Metadata} from "next";
+
+export async function generateMetadata(): Promise<Metadata> {
+
+  return {
+    title: "Andrey Fadeev | Blog",
+    description: "Andrey Fadeev | Blog"
+  }
+}
 
 export default function Blog() {
   return (
