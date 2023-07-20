@@ -7,7 +7,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
     return {
         title: "Andrey Fadeev | Home",
-        description:"DESC!@"
+        description: "Andrey Fadeev | Home"
     }
 }
 
@@ -47,7 +47,6 @@ export default function Home() {
                     View all posts
                 </a>
             </div>
-
         </div>
     )
 }
