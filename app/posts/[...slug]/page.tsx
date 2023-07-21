@@ -6,6 +6,7 @@ import { Mdx } from "@/components/mdx-components"
 import Image from "next/image";
 import dayjs from "dayjs";
 import {GithubComments} from "@/components/github-comments";
+import {DonateButton} from "@/components/donate-button";
 
 interface PostProps {
   params: {
@@ -55,27 +56,27 @@ export default async function PostPage({ params }: PostProps) {
 
   return (
       <div>
-        <article className="py-6 prose dark:prose-invert prose-a:text-orange-600 dark:prose-a:text-yellow-600">
-          <h1 className="mb-2 text-orange-600 dark:text-yellow-600 ">{post.title}</h1>
-
-          <div className={"flex items-start justify-between w-full md:flex-row my-8 my-0"} >
-
-            <div className={"flex items-center my-0"}>
+        <article className="py-6 max-w-none prose md:prose-lg dark:prose-invert prose-a:text-orange-600 dark:prose-a:text-yellow-600">
+          <h1 className="mb-4 md:mb-4 text-orange-600 dark:text-yellow-600">
+            {post.title}
+          </h1>
+          <div className={"flex sm:flex items-center justify-between w-full my-0 md:my-0 "} >
+            <div className={"hidden sm:flex items-center my-0 md:my-0"}>
               <Image
                   src={"/avatar.png"}
                   alt="Andrey Fadeev photo"
-                  width={36}
-                  height={36}
-                  className="rounded-full my-0"
+                  width={40}
+                  height={40}
+                  className="rounded-md my-0 md:my-0 h-[40px] w-[40px]"
               />
-              <div className={"ml-2 text-sm text-gray-600 dark:text-gray-400"}>
+              <div className={"flex-col justify-between ml-2 text-sm text-gray-600 dark:text-gray-400"}>
                 <div className={"flex text-black dark:text-gray-200 font-bold"}>
                   Andrey Fadeev
                 </div>
                 {dayjs(post.date).format('MMMM D, YYYY')}
               </div>
             </div>
-
+            <DonateButton/>
           </div>
           <Mdx code={post.body.code} />
         </article>

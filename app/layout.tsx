@@ -29,7 +29,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <ThemeProvider attribute="class"
                        defaultTheme="system"
                        enableSystem>
-          <div className="max-w-2xl mx-auto py-10 px-4 h-full">
+          <div className="max-w-4xl mx-auto py-10 px-4 h-full">
             <header>
               <div className="flex items-center justify-between">
                 <nav className="mr-auto text-sm font-medium space-x-6">

@@ -1,7 +1,7 @@
 import {GithubSocialIcon, LinkedIn} from "@/components/social-links";
 
 export const Footer = () => {
-    return <footer className="flex justify-between max-w-3xl container mx-auto py-2 text-gray-400 tracking-tight m-2">
+    return <footer className="flex justify-between container mx-auto py-2 text-gray-400 tracking-tight m-2">
         <p className="py-2 text-gray-600 dark:text-gray-400">
             © 2023{" "}
             <a
