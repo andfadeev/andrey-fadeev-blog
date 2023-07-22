@@ -80,6 +80,13 @@ export default async function PostPage({ params }: PostProps) {
           </div>
           <Mdx code={post.body.code} />
           <hr/>
+          <div className={"flex sm:flex items-center justify-between w-full my-0 md:my-0 "} >
+            <div className={"flex items-center my-0 md:my-0"}>
+              Did you find the content useful?
+            </div>
+            <DonateButton/>
+          </div>
+          <hr/>
         </article>
         <GithubComments/>
       </div>

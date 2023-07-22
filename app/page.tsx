@@ -2,6 +2,7 @@ import {allPosts} from "@/.contentlayer/generated"
 import Link from "next/link"
 import {AuthorInfo} from "@/components/author-info";
 import {Metadata} from "next";
+import {Collection} from "immutable";
 
 export async function generateMetadata(): Promise<Metadata> {
 
@@ -12,6 +13,12 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function Home() {
+    const allPostsSorted =
+        Collection(allPosts)
+            .sortBy(post => post.date)
+            .reverse()
+            .take(5)
+            .toJS()
     const buttonClassName = "px-10 py-5  bg-slate-100 dark:bg-slate-900 rounded-md mt-2 inline-block no-underline hover:underline underline-offset-[3px]"
     return (
         <div>
@@ -30,13 +37,14 @@ export default function Home() {
                 </a>
 
                 <h2>Recent posts</h2>
-                {allPosts.map((post) => (
+                {allPostsSorted.map((post) => (
                     <article key={post._id}>
                         <Link href={post.slug}
-                              className={"text-orange-600 dark:text-yellow-600"}>
-                            <h3 className={"text-orange-600 dark:text-yellow-600"}>
+                              className={"text-orange-600 dark:text-yellow-600 "}>
+                            {/*{post.title}*/}
+                            <h4 className={"text-orange-600 dark:text-yellow-600"}>
                                 {post.title}
-                            </h3>
+                            </h4>
                         </Link>
                     </article>
                 ))}
