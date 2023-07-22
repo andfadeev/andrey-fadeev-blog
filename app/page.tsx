@@ -16,7 +16,7 @@ export default function Home() {
     return (
         <div>
             <AuthorInfo/>
-            <div className="prose dark:prose-invert mt-10">
+            <div className="max-w-none prose dark:prose-invert mt-10">
                 <h2>About</h2>
 
                 <p>
@@ -28,7 +28,6 @@ export default function Home() {
                 href={"/about"}>
                     Read more
                 </a>
-
 
                 <h2>Recent posts</h2>
                 {allPosts.map((post) => (

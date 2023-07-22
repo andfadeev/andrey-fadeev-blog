@@ -10,7 +10,7 @@ export function AuthorInfo() {
                 alt="Andrey Fadeev photo"
                 width={120}
                 height={120}
-                className="rounded-full"
+                className="rounded-md"
             />
         </div>
 

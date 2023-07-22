@@ -1,0 +1,84 @@
+---
+title: "Creating Your Own Blog: A Beginner's Guide (2023)"
+description: abc
+date: "2023-07-22"
+---
+
+Recently, I embarked on a journey to start my own technical blog, and I want to share my experience with you. As a non-front-end developer and not an expert in the field, I'm not here to teach you best practices. Instead, I'll describe the simple steps I took to create the blog you're reading now. If you're interested in customizing and styling your blog, you'll need minimal knowledge of `Next.js` and `Tailwind`. Let's get started!
+
+## Step 1: Choosing a Template
+Rather than reinventing the wheel, I opted for a standard approach and decided to deploy with Vercel. When you create a new application in the Vercel console, you can select from a variety of templates. I chose this one: [link to template]. By doing so, I already had the following in place:
+1. A GitHub repository configured to trigger builds on new commits
+2. A Vercel application
+3. A ready-to-use blog
+
+## Step 2: Adding a Comments Section
+I believe that having a comments section is crucial for any tech blog. After exploring various options, I found `giscus`, a fantastic open-source project. It utilizes GitHub's discussion feature as a backend for the comments section, and best of all, it's free to use. Visitors can easily log in using their GitHub accounts, making it perfect for a tech-focused blog.
+
+Integrating `giscus` is straightforward. Just follow the instructions [here](https://giscus.app/). In my code, I created a new component that also handles the theme switch:
+
+```js
+"use client"
+
+import { useTheme } from "next-themes"
+import Giscus from "@giscus/react"
+
+export function GithubComments() {
+  const { theme, systemTheme } = useTheme()
+  const currentTheme = theme === 'system' ? systemTheme : theme
+
+  return (
+    <Giscus
+      id="comments"
+      repo="andfadeev/andrey-fadeev-blog"
+      repoId=""
+      category="Announcements"
+      categoryId=""
+      mapping="url"
+      reactionsEnabled="0"
+      emitMetadata="0"
+      inputPosition="bottom"
+      theme={currentTheme}
+      lang="en"
+      loading="lazy"
+    />
+  )
+}
+```
+
+## Step 3: Adding a "Buy Me a Coffee" Button
+If you're looking to allow your visitors to support you, adding a "Buy Me a Coffee" button is a nice touch. You can integrate this widget into your blog and provide a link to your donation page. Simply create an account [here](https://www.buymeacoffee.com/) and set up your page.
+
+To add the button, you have multiple options. You can use their generator for buttons or widgets, or simply copy the link to your page and style it as you wish. I used some beautiful Tailwind buttons with gradients (link), and they look fabulous.
+
+Here's the code for the "Buy Me a Coffee" button:
+
+```js
+"use client"
+
+import { useTheme } from "next-themes"
+
+export function DonateButton() {
+  const { theme, systemTheme } = useTheme()
+  const currentTheme = theme === 'system' ? systemTheme : theme
+
+  const buttonClassName = currentTheme === 'dark'
+    ? "text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-md text-sm px-5 py-2.5 text-center"
+    : "text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-md text-sm px-5 py-2.5 text-center"
+
+  return (
+    <a
+      href="https://www.buymeacoffee.com/andrey.fadeev"
+      target="_blank"
+      className={'block'}
+    >
+      <button className={buttonClassName}>
+        Buy me a coffee
+      </button>
+    </a>
+  )
+}
+```
+
+## Conclusion
+Congratulations! You've now set up your beautiful blog and are ready to fill it with amazing content. Remember, this process is not about being perfect or an expert in front-end development. It's about sharing your passion and knowledge with others. Enjoy the journey and have fun creating!

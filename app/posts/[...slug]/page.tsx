@@ -57,7 +57,7 @@ export default async function PostPage({ params }: PostProps) {
   return (
       <div>
         <article className="py-6 max-w-none prose md:prose-lg dark:prose-invert prose-a:text-orange-600 dark:prose-a:text-yellow-600">
-          <h1 className="mb-4 md:mb-4 text-orange-600 dark:text-yellow-600">
+          <h1 className="text-orange-600 dark:text-yellow-600">
             {post.title}
           </h1>
           <div className={"flex sm:flex items-center justify-between w-full my-0 md:my-0 "} >
@@ -79,6 +79,7 @@ export default async function PostPage({ params }: PostProps) {
             <DonateButton/>
           </div>
           <Mdx code={post.body.code} />
+          <hr/>
         </article>
         <GithubComments/>
       </div>
