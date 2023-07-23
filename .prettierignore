@@ -6,3 +6,8 @@ pnpm-lock.yaml
 .contentlayer
 contentlayer.config.js
 *.mdx
+.next
+.idea
+node_modules
+public
+bb.edn
