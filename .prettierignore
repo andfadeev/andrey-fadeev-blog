@@ -1,0 +1,5 @@
+# Ignore artifacts:
+.vscode
+content
+README.md
+pnpm-lock.yaml

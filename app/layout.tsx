@@ -19,7 +19,6 @@ interface RootLayoutProps {
   children: React.ReactNode
 }
 
-
 export default function RootLayout({ children }: RootLayoutProps) {
   const linkClassName = "underline-offset-4 hover:underline outline-none hover:text-orange-600 dark:hover:text-yellow-600"
   return (
