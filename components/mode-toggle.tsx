@@ -1,15 +1,16 @@
-"use client"
+"use client";
 
-import { useTheme } from "next-themes"
+import { useTheme } from "next-themes";
 
 export function ModeToggle() {
-  const { setTheme, systemTheme, theme } = useTheme()
-    const currentTheme = theme === 'system' ? systemTheme : theme;
+  const { setTheme, systemTheme, theme } = useTheme();
+  const currentTheme = theme === "system" ? systemTheme : theme;
 
-    return (
+  return (
     <button
       onClick={() => setTheme(currentTheme === "light" ? "dark" : "light")}
-      className="border rounded-md w-6 h-6 flex items-center justify-center">
+      className="border rounded-md w-6 h-6 flex items-center justify-center"
+    >
       <span className="sr-only">Toggle mode</span>
       {theme !== "dark" ? (
         <svg
@@ -18,7 +19,8 @@ export function ModeToggle() {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="w-4 h-4">
+          className="w-4 h-4"
+        >
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -32,7 +34,8 @@ export function ModeToggle() {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="w-4 h-4">
+          className="w-4 h-4"
+        >
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -41,5 +44,5 @@ export function ModeToggle() {
         </svg>
       )}
     </button>
-  )
+  );
 }

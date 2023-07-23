@@ -3,3 +3,6 @@
 content
 README.md
 pnpm-lock.yaml
+.contentlayer
+contentlayer.config.js
+*.mdx

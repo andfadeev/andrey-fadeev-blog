@@ -16,4 +16,4 @@
            (spit blog-path
              (format content-template blog-title (java.time.LocalDate/now))))}
   format {:doc "Format source files with Prettier"
-          :task (shell "npx prettier . --fix")}}}
+          :task (shell "npx prettier . --write")}}}
