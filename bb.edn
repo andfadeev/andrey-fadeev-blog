@@ -1,0 +1,17 @@
+{:tasks
+ {post:generate
+  {:doc "Generate empty post MDX file from the title"
+   :task (let [blog-title (first *command-line-args*)
+               sanitize-blog-title (-> blog-title
+                                     (clojure.string/lower-case)
+                                     (clojure.string/replace (re-pattern " ") "_")
+                                     (clojure.string/replace (re-pattern "\\W+")
+                                       "")
+                                     (clojure.string/replace (re-pattern "_") "-"))
+               blog-path (format "content/posts/%s.mdx" sanitize-blog-title)
+               content-template "---\ntitle: \"%s\"\ndescription: \"\"\ndate: \"%s\"\n---\n"]
+
+           ;;TODO: check if page is already there
+
+           (spit blog-path
+             (format content-template blog-title (java.time.LocalDate/now))))}}}
