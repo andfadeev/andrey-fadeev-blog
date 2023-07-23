@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { Analytics } from "@/components/analytics"
 import { ModeToggle } from "@/components/mode-toggle"
 import {Footer} from "@/components/footer";
+import Script from "next/script";
 
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"] })
 
@@ -26,7 +27,22 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body
         className={`antialiased min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-50 ${spaceGrotesk.className}`}
       >
-        <ThemeProvider attribute="class"
+      <Script
+          strategy="afterInteractive"
+          src="https://www.googletagmanager.com/gtag/js?id=G-HX4Q1CYEE1"
+      />
+      <Script
+          id="google-analytics"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+              __html: `window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-HX4Q1CYEE1');`,
+          }}
+      />
+      <ThemeProvider attribute="class"
                        defaultTheme="system"
                        enableSystem>
           <div className="max-w-4xl mx-auto py-10 px-4 h-full">
