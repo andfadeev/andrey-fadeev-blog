@@ -19,19 +19,20 @@ export default function Posts() {
   return (
     <>
       <AuthorInfo />
-      <div className="max-w-none prose dark:prose-invert">
+      <div className="max-w-none prose md:prose-lg dark:prose-invert">
+        {/*  TODO: group by YYYY-MM*/}
         {allPostsSorted.map((post) => (
-          <article key={post._id}>
-            <Link
-              href={post.slug}
-              className={"text-orange-600 dark:text-yellow-600"}
-            >
-              <h3 className={"text-orange-600 dark:text-yellow-600"}>
-                {post.title}
-              </h3>
-            </Link>
-          </article>
+          <Link
+            key={post._id}
+            href={post.slug}
+            className={"text-orange-600 dark:text-yellow-600"}
+          >
+            <h2 className={"text-orange-600 dark:text-yellow-600"}>
+              {post.title}
+            </h2>
+          </Link>
         ))}
+        <hr />
       </div>
     </>
   );

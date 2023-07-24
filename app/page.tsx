@@ -3,6 +3,7 @@ import Link from "next/link";
 import { AuthorInfo } from "@/components/author-info";
 import { Metadata } from "next";
 import { Collection } from "immutable";
+import { HomePageButton } from "@/components/home-page-button";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -22,8 +23,8 @@ export default function Home() {
   return (
     <div>
       <AuthorInfo />
-      <div className="max-w-none prose dark:prose-invert mt-10">
-        <h2>About</h2>
+      <div className="max-w-none prose md:prose-lg dark:prose-invert mt-10">
+        {/*<h2>About</h2>*/}
 
         <p>
           I&apos;m interested in functional programming and web development.
@@ -31,28 +32,25 @@ export default function Home() {
           language, but I am also curious about full stack development.
         </p>
 
-        <a className={buttonClassName} href={"/about"}>
-          Read more
-        </a>
+        <HomePageButton href="/about" title={"Read more"} />
 
-        <h2>Recent posts</h2>
+        <hr />
+
+        {/*<h2>Recent posts</h2>*/}
         {allPostsSorted.map((post) => (
-          <article key={post._id}>
-            <Link
-              href={post.slug}
-              className={"text-orange-600 dark:text-yellow-600 "}
-            >
-              {/*{post.title}*/}
-              <h4 className={"text-orange-600 dark:text-yellow-600"}>
-                {post.title}
-              </h4>
-            </Link>
-          </article>
+          <Link
+            key={post._id}
+            href={post.slug}
+            className={"text-orange-600 dark:text-yellow-600 "}
+          >
+            <h2 className={"text-orange-600 dark:text-yellow-600"}>
+              {post.title}
+            </h2>
+          </Link>
         ))}
 
-        <a className={buttonClassName} href={"/blog"}>
-          View all posts
-        </a>
+        <HomePageButton href="/posts" title={"View all posts"} />
+        <hr />
       </div>
     </div>
   );
