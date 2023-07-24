@@ -6,12 +6,12 @@ import { Collection } from "immutable";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "Andrey Fadeev | Blog",
-    description: "Andrey Fadeev | Blog",
+    title: "Andrey Fadeev | Posts",
+    description: "Andrey Fadeev | Posts",
   };
 }
 
-export default function Blog() {
+export default function Posts() {
   const allPostsSorted = Collection(allPosts)
     .sortBy((post) => post.date)
     .reverse()
@@ -22,7 +22,6 @@ export default function Blog() {
       <div className="max-w-none prose dark:prose-invert">
         {allPostsSorted.map((post) => (
           <article key={post._id}>
-            {/*<span className={'p-10 bg-amber-950 rounded-md'}>2023</span>*/}
             <Link
               href={post.slug}
               className={"text-orange-600 dark:text-yellow-600"}
@@ -31,7 +30,6 @@ export default function Blog() {
                 {post.title}
               </h3>
             </Link>
-            {/*{post.description && <p>{post.description}</p>}*/}
           </article>
         ))}
       </div>

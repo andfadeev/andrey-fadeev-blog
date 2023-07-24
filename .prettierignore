@@ -9,5 +9,4 @@ contentlayer.config.js
 .next
 .idea
 node_modules
-public
 bb.edn

@@ -1,5 +1,6 @@
 {:tasks
- {post:generate
+ {:requires ([babashka.fs :as fs])
+  post:generate
   {:doc "Generate empty post MDX file from the title"
    :task (let [blog-title (first *command-line-args*)
                sanitize-blog-title (-> blog-title
@@ -16,4 +17,21 @@
            (spit blog-path
              (format content-template blog-title (java.time.LocalDate/now))))}
   format {:doc "Format source files with Prettier"
-          :task (shell "npx prettier . --write")}}}
+          :task (shell "npx prettier . --write")}
+  sitemap:generate {:doc "Generate sitemap.xml"
+           :task (let [pages ["" "/posts" "/about"]
+                       posts (->> (fs/glob "./content/posts" "**{.mdx}")
+                               (map (fn [path]
+                                      (-> path
+                                        (clojure.string/replace  (re-pattern "content/") "/")
+                                        (clojure.string/replace (re-pattern ".mdx") "")))))
+                       sitemap-xml-path "public/sitemap.xml"
+                       entries (->> (concat pages posts)
+                                 (sort)
+                                 (map (fn [page]
+                                        (str "<url><loc>https://andreyfadeev.com"
+                                          page
+                                          "</loc></url>")))
+                                 (clojure.string/join "\n"))]
+                   (spit sitemap-xml-path
+                     (str "<?xml version=\"1.0\" encoding=\"UTF-8\"?><urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">" entries "</urlset>")))}}}
