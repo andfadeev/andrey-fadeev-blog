@@ -16,7 +16,7 @@ export function GithubComments() {
         category="Announcements"
         categoryId="DIC_kwDOJ8HU2c4CX-es"
         mapping="url"
-        reactionsEnabled="0"
+        reactionsEnabled="1"
         emitMetadata="0"
         inputPosition="bottom"
         theme={currentTheme}

@@ -58,11 +58,9 @@ export default async function PostPage({ params }: PostProps) {
       <article className="py-6 max-w-none prose md:prose-lg dark:prose-invert prose-a:text-orange-600 dark:prose-a:text-yellow-600">
         <h1 className="text-orange-600 dark:text-yellow-600">{post.title}</h1>
         <div
-          className={
-            "flex sm:flex items-center justify-between w-full my-0 md:my-0 "
-          }
+          className={"flex items-center justify-between w-full my-0 md:my-0 "}
         >
-          <div className={"hidden sm:flex items-center my-0 md:my-0"}>
+          <div className={"flex items-center my-0 md:my-0"}>
             <Image
               src={"/avatar.png"}
               alt="Andrey Fadeev photo"
