@@ -14,7 +14,6 @@ export default function About() {
       <AuthorInfo />
       <div className="max-w-none prose md:prose-lg dark:prose-invert mt-10">
         <p>Not much here yet 🥸</p>
-
         <hr />
       </div>
     </>

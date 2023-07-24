@@ -1,84 +1,206 @@
 ---
 title: "Creating Your Own Blog: A Beginner's Guide (2023)"
 description: ""
-date: "2023-07-22"
+date: "2023-07-24"
 ---
 
-Recently, I embarked on a journey to start my own technical blog, and I want to share my experience with you. As a non-front-end developer and not an expert in the field, I'm not here to teach you best practices. Instead, I'll describe the simple steps I took to create the blog you're reading now. If you're interested in customizing and styling your blog, you'll need minimal knowledge of `Next.js` and `Tailwind`. Let's get started!
+## Introduction
 
-## Step 1: Choosing a Template
-Rather than reinventing the wheel, I opted for a standard approach and decided to deploy with Vercel. When you create a new application in the Vercel console, you can select from a variety of templates. I chose this one: [link to template]. By doing so, I already had the following in place:
-1. A GitHub repository configured to trigger builds on new commits
-2. A Vercel application
-3. A ready-to-use blog
+Not too long ago, a wild idea struck me – starting my very own blog, a technical one, or maybe not just technical.
 
-## Step 2: Adding a Comments Section
-I believe that having a comments section is crucial for any tech blog. After exploring various options, I found `giscus`, a fantastic open-source project. It utilizes GitHub's discussion feature as a backend for the comments section, and best of all, it's free to use. Visitors can easily log in using their GitHub accounts, making it perfect for a tech-focused blog.
+The first challenge that confronted me was choosing the right engine to power my blog.
+Let me be clear, I'm not a front-end expert, so don't expect to find advanced best practices here.
+Instead, I'm going to share my journey of creating this very blog you are reading.
+Surprisingly, it turned out to be a straightforward process, thanks to the `Next.js` and `Tailwind` and `ContentLayer` combo.
+With just a minimal understanding of these technologies, you can effortlessly customize and style the defaults to suit your personal preferences.
+So, without further ado, let's dive into the journey of building a personal blog!
 
-Integrating `giscus` is straightforward. Just follow the instructions [here](https://giscus.app/). In my code, I created a new component that also handles the theme switch:
+## Starting Strong: An Excellent Template
 
-```js
-"use client"
+When it came to setting up my blog, I chose not to reinvent the wheel and instead opted for a tried-and-true option – `Next.js` on Vercel.
+While creating a new application in the Vercel console, I've found a [perfect template](https://vercel.com/templates/next.js/nextjs-contentlayer) for my needs. This template relies on [ContentLayer](https://www.contentlayer.dev), which allow to easily edit posts as MDX files.
+Coupled with Tailwind CSS, my personal favorite for crafting web app styles, the combination proved to be a powerful and efficient choice.
 
-import { useTheme } from "next-themes"
-import Giscus from "@giscus/react"
+Moreover, Tailwind CSS grants access to a great `typography` [plugin](https://tailwindcss.com/docs/typography-plugin), effectively eliminating any worries about styling my blog posts. By composing content in markdown and enclosing it with a class like `prose` within a div, the end result is a visually stunning layout that always impresses.
 
-export function GithubComments() {
-  const { theme, systemTheme } = useTheme()
-  const currentTheme = theme === 'system' ? systemTheme : theme
+So after we followed those simple step in Vercel to create new app from the template, we will have:
 
+1. A GitHub repository (which I recommend making public for the integration with `giscus` in the future)
+2. A Vercel application (configured to build and deploy changes from the repository)
+3. A fully operational blog website (the link is available in the Vercel console)
+
+Even the initial generated blog has an attractive minimalistic design and could be used right away.
+
+Now, let's explore how we can take this blog to the next level!
+
+## Personalize Your Blog with `Tailwind CSS`
+
+The beauty of Tailwind CSS lies in its simplicity and ease of use, even without extensive CSS knowledge. You have the creative freedom to design a layout that reflects your style and preferences. To get started, I added a personal info block at the top of each page. Take a look at the code snippet below:
+
+```jsx showLineNumbers
+import Image from "next/image";
+import { GithubSocialIcon, LinkedIn } from "@/components/social-links";
+
+export function AuthorInfo() {
   return (
-    <Giscus
-      id="comments"
-      repo="andfadeev/andrey-fadeev-blog"
-      repoId=""
-      category="Announcements"
-      categoryId=""
-      mapping="url"
-      reactionsEnabled="0"
-      emitMetadata="0"
-      inputPosition="bottom"
-      theme={currentTheme}
-      lang="en"
-      loading="lazy"
-    />
-  )
+    <div className="flex flex-row relative justify-between w-full mt-10 items-center">
+      <div>
+        <Image
+          src={"/avatar.png"}
+          alt="Andrey Fadeev photo"
+          width={120}
+          height={120}
+          className="rounded-md"
+        />
+      </div>
+
+      <div className="flex flex-col relative w-full ml-4">
+        <h1 className="font-extrabold text-2xl tracking-tight">
+          Andrey Fadeev
+        </h1>
+        <p className="text-gray-600 dark:text-gray-400">
+          Staff Software Engineer at{" "}
+          <a
+            href={"https://kroo.com"}
+            target={"_blank"}
+            className={"underline-offset-[3px] hover:underline"}
+          >
+            Kroo Bank
+          </a>
+        </p>
+        <div className={"mt-2 flex gap-2 text-gray-600 dark:text-gray-400"}>
+          <LinkedIn />
+          <GithubSocialIcon />
+        </div>
+      </div>
+    </div>
+  );
 }
 ```
 
-## Step 3: Adding a "Buy Me a Coffee" Button
-If you're looking to allow your visitors to support you, adding a "Buy Me a Coffee" button is a nice touch. You can integrate this widget into your blog and provide a link to your donation page. Simply create an account [here](https://www.buymeacoffee.com/) and set up your page.
+Similarly, you can create a simple footer for your blog:
 
-To add the button, you have multiple options. You can use their generator for buttons or widgets, or simply copy the link to your page and style it as you wish. I used some beautiful Tailwind buttons with gradients (link), and they look fabulous.
+```jsx showLineNumbers
+import { GithubSocialIcon, LinkedIn } from "@/components/social-links";
+
+export const Footer = () => {
+  return (
+    <footer className="flex justify-between container mx-auto py-2 text-gray-400 tracking-tight m-2">
+      <p className="py-2 text-gray-600 dark:text-gray-400">
+        © 2023{" "}
+        <a
+          className="hover:underline hover:text-black dark:hover:text-white underline-offset-[3px]"
+          href="/"
+        >
+          Andrey Fadeev
+        </a>
+      </p>
+      <ul className="flex items-center py-2 gap-2">
+        <li>
+          <LinkedIn />
+        </li>
+        <li>
+          <GithubSocialIcon />
+        </li>
+      </ul>
+    </footer>
+  );
+};
+```
+
+## Enhance Code Highlighting with `Prism.js`
+
+The default template lacks a code highlighter for your code blocks. After trying out different options, I found that the `rehype-prism-plus` plugin, along with a visually appealing theme from `Prism.js`, worked best. This plugin allows you to enable features like code line numbers and line highlighting with minimal effort.
+
+## Add a Comment Section with `Giscus`
+I believe that having a comments section is crucial for any tech blog. After exploring various options, I found `giscus`, a fantastic open-source project. It utilizes GitHub's discussion feature as a backend for the comments section, and best of all, it's free to use. Visitors can easily log in using their GitHub accounts, making it perfect for a tech-focused blog.
+
+Integrating `giscus` is straightforward, just follow the [instructions here](https://giscus.app/). In my code, I created a new component that also handles the theme switching:
+
+```jsx
+"use client";
+
+import { useTheme } from "next-themes";
+import Giscus from "@giscus/react";
+
+export function GithubComments() {
+  const { theme, systemTheme } = useTheme();
+  const currentTheme = theme === "system" ? systemTheme : theme;
+
+  return (
+    <div className={"mt-2"}>
+      <Giscus
+        id="comments"
+        repo="andfadeev/my-repo"
+        repoId="***"
+        category="Announcements"
+        categoryId="***"
+        mapping="url"
+        reactionsEnabled="0"
+        emitMetadata="0"
+        inputPosition="bottom"
+        theme={currentTheme}
+        lang="en"
+        loading="lazy"
+      />
+    </div>
+  );
+}
+```
+
+## Adding a "Buy Me a Coffee" Button
+If you're looking to allow your visitors to support you, adding a "Buy Me a Coffee" button is a nice touch. You can integrate this widget into your blog and provide a link to your donation page. Simply [create an account](https://www.buymeacoffee.com/) and set up your page.
+
+To add the button, you have multiple options. You can use their generator for buttons or widgets, or simply copy the link to your page and style it as you wish. I used some beautiful `Tailwind CSS` [buttons with gradients](https://flowbite.com/docs/components/buttons/#gradient-duotone), and they look fabulous.
 
 Here's the code for the "Buy Me a Coffee" button:
 
-```js
-"use client"
+```jsx
+"use client";
 
-import { useTheme } from "next-themes"
+import { useTheme } from "next-themes";
 
 export function DonateButton() {
-  const { theme, systemTheme } = useTheme()
-  const currentTheme = theme === 'system' ? systemTheme : theme
+  const { theme, systemTheme } = useTheme();
+  const currentTheme = theme === "system" ? systemTheme : theme;
 
-  const buttonClassName = currentTheme === 'dark'
-    ? "text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-md text-sm px-5 py-2.5 text-center"
-    : "text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-md text-sm px-5 py-2.5 text-center"
+  const buttonClassName =
+    currentTheme === "dark"
+      ? "text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-md text-sm px-5 py-2.5 text-center"
+      : "text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-md text-sm px-5 py-2.5 text-center";
 
   return (
     <a
       href="https://www.buymeacoffee.com/andrey.fadeev"
       target="_blank"
-      className={'block'}
+      className={"block"}
     >
-      <button className={buttonClassName}>
-        Buy me a coffee
-      </button>
+      <button className={buttonClassName}>Buy me a coffee</button>
     </a>
-  )
+  );
 }
 ```
 
-## Conclusion
-Congratulations! You've now set up your beautiful blog and are ready to fill it with amazing content. Remember, this process is not about being perfect or an expert in front-end development. It's about sharing your passion and knowledge with others. Enjoy the journey and have fun creating!
+## Ready for Your Own Domain?
+
+The final touch, if you are taking this seriously, is to invest a few pounds in your own domain. It may not be the most expensive thing in the world, but your website will greatly benefit from it. Simply select a domain registrar, brainstorm a fantastic name, and make it yours! Integrating your domain with the website you deployed on Vercel is a breeze – just follow the instructions, typically involving configuring CNAME and A records.
+
+## Google Analytics
+
+Expect a significant surge in traffic and don't want to miss out on valuable insights? In that case, registering and attaching Google Analytics to your blog is a wise move.
+
+## Access the Source Code
+
+All the source code for this blog is available on my GitHub as a public repository: [https://github.com/andfadeev/andrey-fadeev-blog](https://github.com/andfadeev/andrey-fadeev-blog), feel free to explore it for more details!
+
+## References
+
+- [https://vercel.com/templates/next.js/nextjs-contentlayer](https://vercel.com/templates/next.js/nextjs-contentlayer)
+- [https://giscus.app](https://giscus.app)
+- [https://github.com/timlrx/rehype-prism-plus](https://github.com/timlrx/rehype-prism-plus)
+- [https://www.buymeacoffee.com](https://www.buymeacoffee.com)
+
+
+Congratulations, now you have your beautiful blog. It's time to fill it with great content! But that's easy, right?
+
+Happy blogging!
