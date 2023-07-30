@@ -14,10 +14,10 @@ date: "2023-07-30"
 
 ## Introduction
 
-In this blog post, I'm going to explain application monitoring with Prometheus and Grafana. We will focus on the basics, and it will be easy to follow along. In the end, we will have a simple HTTP web application running locally, a docker-based deployment of Prometheus and Grafana to monitor our application and some load-testing scripts with K6 to generate load and see our metrics in real-time.
+In this blog post, I'm going to explain application monitoring with Prometheus and Grafana. We will focus on the basics, and it will be easy to follow along. In the end, we will have a simple HTTP web application running locally, a docker-based deployment of Prometheus and Grafana to monitor our application and some load-testing scripts with `K6` to generate load and see our metrics in real-time.
 
 ## Prerequisites
-You will need Docker installed on your machine, just follow the installation instructions on the official website if you don't have it. For Windows users, I just suggest to user WSL2 (Windows Linux Subsystem) as it will be much easier to follow the tutorial. To verify that docker is running let's run a command in the terminal:
+You will need Docker installed on your machine, just follow the installation instructions on the official website if you don't have it. For Windows users, I just suggest to user WSL2 (Windows Subsystem for Linux) as it will be much easier to follow the tutorial. To verify that docker is running let's run a command in the terminal:
 ```sh
 docker --version
 > Docker version 24.0.2, build cb74dfc
@@ -54,14 +54,14 @@ quarkus create prometheus-monitoring-basics
 cd prometheus-monitoring-basics
 quarkus dev
 ```
-Now we can validate that it is actually running by executing (or just navigate to http://localhost:8080 in your browser):
+Now we can validate that it is actually running by executing (or just navigate to [http://localhost:8080](http://localhost:8080) in your browser):
 
 ```sh
 curl http://localhost:8080/hello
 > Hello from RESTEasy Reactive
 ```
 
-Let's create a new REST endpoint that we will be using for testing: `/fibonacci`. It will generate a random int in a range from 1 to 50 and calculate a Fibonacci number for it, so the request response will be different for each call. To do it - copy the `GreetingResource.java` to `RandomFibonacciResource.java` and change the code to the following:
+Let's create a new REST endpoint that we will be using for testing: `/fibonacci`. It will generate a random integer `N` in a range from 0 to 50 and calculate a Fibonacci number for it, so the request response will be different for each call. To do it - copy the `GreetingResource.java` to `RandomFibonacciResource.java` and change the code to the following:
 
 ```java
 package org.acme;
@@ -100,7 +100,7 @@ We can test that it's working by calling the endpoint:
 curl http://localhost:8080/fibonacci
 > fib(13) = 233
 ```
-Ok, cool! It's time to dive into the monitoring setup. First of all, Quarkus framework gives you an easy option to enable metrics with a [Micrometer plugin](https://quarkus.io/guides/telemetry-micrometer). So let's add it to our app with the CLI command:
+OK, cool! It's time to dive into the monitoring setup. First of all, Quarkus framework gives you an easy option to enable metrics with a [Micrometer plugin](https://quarkus.io/guides/telemetry-micrometer). So let's add it to our app with the CLI command:
 ```sh
 quarkus extension add 'micrometer-registry-prometheus'
 ```
@@ -120,7 +120,7 @@ Your should see something like this:
        style={{ width: '100%', height: 'auto' }}
        alt="Metrics endpoint response" />
 
-As we can see - we have a bunch of metrics available out of the box, eg JVM metrics and our HTTP server metrics. Let's focus on these lines:
+As we can see - we have a bunch of metrics available out of the box, e.g. JVM metrics and our HTTP server metrics. Let's focus on these lines:
 ```text
 # TYPE http_server_requests_seconds summary
 # HELP http_server_requests_seconds
@@ -129,7 +129,7 @@ http_server_requests_seconds_sum{method="GET",outcome="SUCCESS",status="200",uri
 ```
 It means that we have a collector of the `summary` type inside our application that tracks HTTP calls: count of the calls and duration of the call and the dimensions are `method`, `outcome`, `status` and `uri`.
 
-There are 4 metric types in Prometheus: counter, summary, gauge and histogram. If you are not familiar with those, I just recommend reading the offical doc explaining it: [https://prometheus.io/docs/concepts/metric_types](https://prometheus.io/docs/concepts/metric_types).
+There are 4 metric types in Prometheus: counter, summary, gauge and histogram. If you are not familiar with those, I just recommend reading the official doc explaining it: [https://prometheus.io/docs/concepts/metric_types](https://prometheus.io/docs/concepts/metric_types).
 
 ## Running Prometheus, Grafana and the application
 The next step is to start Prometheus, Grafana and our Java application locally and connect them. The easiest option is to use a `docker-compose.yml` file, let's take a look:
@@ -208,18 +208,18 @@ scrape_configs:
       - targets: ['prometheus-monitoring-basics-app:8080']
 ```
 
-It's pretty basic in our case. As we only have a single application to monitor we can use static configuration for targets. In the real-world examples, there are other options supported by Prometheus, eg. `kubernetes_sd` or `consul_sd`.
+It's pretty basic in our case. As we only have a single application to monitor we can use static configuration for targets. In the real-world examples, there are other options supported by Prometheus, e.g. `kubernetes_sd` or `consul_sd`.
 
 But let's step back to understand what is a target and how Prometheus is working.
 
-Prometheus contains 3 parts:
+Prometheus consists of 3 parts:
 - Storage: time-series database to store the metrics
 - Retriever: to discover applications to monitor and pull metrics
 - HTTP server: to serve requests about metrics (PromQL)
 
 In our config, we have a single static scrape target and scrap interval of 10 seconds, so Prometheus will call `GET https://our-app:8080/q/metrics` every 10 seconds, it will read the response, and it knows how to store that response in the internal time-series database.  Once we have data flowing the internal storage we can use UI or external tools like Grafana to query and visualize metrics.
 
-You potentially noticed that in the `docker-compose.yml` we also have an additional service called `k6`. It's a nice tool for load-testing and it will generate some requests to our application so we can see our metrics in real-time. You can read more about it as it's pretty cool and versatile: https://k6.io/docs/get-started/ . For our needs the script is pretty basic, add `load.js` to the root of the project:
+You potentially noticed that in the `docker-compose.yml` we also have an additional service called `k6`. It's a nice tool for load-testing, and it will generate some requests to our application, so we can see our metrics in real-time. You can read more about it as it's pretty cool and versatile: [https://k6.io/docs/get-started/](https://k6.io/docs/get-started/) . For our needs the script is trivial - add `load.js` to the root of the project:
 
 ```js
 import http from 'k6/http';
@@ -227,7 +227,7 @@ import http from 'k6/http';
 export const options = {
     stages: [
         { duration: '1h', target: 20 }
-    ],
+    ]
 };
 
 export default function () {
@@ -243,7 +243,7 @@ docker-compose ps
 ```
 Now we have a bunch of apps running: our Java application is on [http://localhost:8080](http://localhost:8080), Prometheus is on [http://localhost:9090](http://localhost:9090) and Grafana is on [http://localhost:3000](http://localhost:3000).
 
-Let's navigate to [http://localhost:9090/targets](http://localhost:9090/targets). Here we should see the list of our targets, should be no surprise as we hard-coded them in the YAML configuration, in the production setup this list will be dynamic based on your service discovery.
+Let's navigate to [http://localhost:9090/targets](http://localhost:9090/targets). Here we should see the list of our targets, should be no surprise as we hard-coded them in the `YAML` configuration, in the production setup this list will be dynamic based on your service discovery.
 
 <Image src="/images/application-monitoring-made-easy-a-guide-to-prometheus-and-grafana/targets.png"
        width={0}
@@ -263,9 +263,9 @@ Let's now explore the graph tab: navigate to [http://localhost:9090/graph](http:
 
 While the Prometheus UI could be useful to explore available metrics and build some ad-hoc graphs, overall it's rather basic, so usually people prefer other tools to visualize metrics. A popular example is Grafana.
 
-Let's navigate to [http://localhost:3000](http://localhost:3000) and log in with the `admin/admin` combination (you can skip the step to create the password). Now we are inside Grafana UI and it looks much better than Prometheus. The final bit is to configure a data source in Grafana to use our Prometheus as a back-end for metrics. To do so go to [http://localhost:3000/datasources/new](http://localhost:3000/datasources/new) and select Prometheus type. The only thing to fill in is the URL of Prometheus: `http://prometheus:9090` and click `save and test`. Now if you navigate to [http://localhost:3000/explore](http://localhost:3000/explore) and select your Prometheus data source all metrics that you've seen in Prometheus UI are available in Grafana as well.
+Let's navigate to [http://localhost:3000](http://localhost:3000) and log in with the `admin/admin` combination (you can skip the step to create the password). Now we are inside Grafana UI and it looks much better than Prometheus UI. The final bit is to configure a data source in Grafana to use our Prometheus as a back-end for metrics. To do so go to [http://localhost:3000/datasources/new](http://localhost:3000/datasources/new) and select Prometheus type. The only thing to fill in is the URL of Prometheus: `http://prometheus:9090` and click `Save & Test` button. Now if you navigate to [http://localhost:3000/explore](http://localhost:3000/explore) and select your Prometheus data source - all metrics that you've seen in Prometheus are available in Grafana as well.
 
-The last bit is to create a useful dashboard for our application, luckily there is an existing one for Quarkus applications: [https://grafana.com/grafana/dashboards/14370-jvm-quarkus-micrometer-metrics](https://grafana.com/grafana/dashboards/14370-jvm-quarkus-micrometer-metrics). You can add it to your Grafana by importing by dashboard ID or by copying the full JSON of the dashboard. Let's take a look at how many requests we have from the K6 tool.
+The last bit is to create a useful dashboard for our application. Luckily there is an existing one for Quarkus applications: [https://grafana.com/grafana/dashboards/14370-jvm-quarkus-micrometer-metrics](https://grafana.com/grafana/dashboards/14370-jvm-quarkus-micrometer-metrics). You can add it to your Grafana by importing the dashboard by `ID` or by copying the full `JSON`. Let's take a look at how many requests we have generated by the `K6` tool.
 
 <Image src="/images/application-monitoring-made-easy-a-guide-to-prometheus-and-grafana/grafana.png"
        width={0}
@@ -276,11 +276,11 @@ The last bit is to create a useful dashboard for our application, luckily there 
 
 ## Recap
  That's it for the introduction to the Prometheus and Grafana monitoring. Let's summarize what we've learned:
-1. In your application, you have to create a Prometheus registry with collectors (some popular frameworks and expose a lot of metrics out of the box).
+1. In our application, we have to create a Prometheus registry with collectors (some popular frameworks will expose a lot of metrics out of the box).
 2. The Prometheus server should be configured with scrape targets (could be static or dynamic).
-3. The Prometheus server periodically pulls metrics from all targets (by HTTP request to the metrics endpoint).
+3. The Prometheus server periodically pulls metrics from all targets (by doing HTTP requests to the metrics endpoint).
 4. Prometheus transforms and stores the result of each call in the internal time-series database.
 5. Metrics are available to visualize in the Prometheus UI.
-6. Alternatively, you can have a Grafana deployment with a Prometheus data source to visualise your metrics.
+6. Alternatively, you can have a Grafana deployment with a Prometheus data source to visualize your metrics.
 
 All the source code for this example is available on GitHub: [https://github.com/andfadeev/blog-examples/tree/main/prometheus-monitoring-basics](https://github.com/andfadeev/blog-examples/tree/main/prometheus-monitoring-basics).
