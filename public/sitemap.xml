@@ -10,6 +10,9 @@
         <loc>https://andreyfadeev.com/posts</loc>
     </url>
     <url>
+        <loc>https://andreyfadeev.com/posts/application-monitoring-made-easy-a-guide-to-prometheus-and-grafana</loc>
+    </url>
+    <url>
         <loc>https://andreyfadeev.com/posts/creating-your-own-blog-a-beginners-guide-2023</loc>
     </url>
 </urlset>
